@@ -20,11 +20,38 @@ namespace MVC_ATMDEM.Controllers
             return View();
         }
 
+        //[Route("ssd")]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Contact(string message)
+        {
+            ViewBag.Message = "Thanks got your message";
+            return View();
+        }
+
+        public ActionResult Foo()
+        {
+            return View("About");
+        }
+
+        public ActionResult Serial(string letterCase)
+        {
+            var serial = "ASPNETMVCATM1";
+            if (letterCase == "lower")
+            {
+                return Content(serial.ToLower());
+            }
+
+            return Content(serial);
+        }
+
+
+
     }
 }

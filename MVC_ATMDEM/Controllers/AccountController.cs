@@ -155,6 +155,19 @@ namespace MVC_ATMDEM.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var db = new ApplicationDbContext();
+                    var accountNUm = (123456 + db.CheckingAccounts.Count()).ToString().PadLeft(10, '0');
+                    var checkingAccount = new CheckingAccount
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        AccountNumber = accountNUm,
+                        Balance = 0,
+                        ApplicationUserId = user.Id
+                    };
+                    db.CheckingAccounts.Add(checkingAccount);
+                    db.SaveChanges();
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
