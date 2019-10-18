@@ -37,5 +37,7 @@ namespace MVC_ATMDEM.Models
         public string ApplicationUserId { get; set; }
 
         public string Name => $"{FirstName} {LastName}";
+
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using MVC_ATMDEM.Models;
 
 namespace MVC_ATMDEM.Controllers
 {
     public class HomeController : Controller
     {
+
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        [Authorize]
         public ActionResult Index()
         {
+
+            var userId = User.Identity.GetUserId();
+
+            var CheckingAccountId = db.CheckingAccounts.First(a => a.ApplicationUserId == userId).Id;
+            ViewBag.CheckingAccountId = CheckingAccountId;
             return View();
         }
 

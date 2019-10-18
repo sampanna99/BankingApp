@@ -31,5 +31,7 @@ namespace MVC_ATMDEM.Models
         }
 
         public DbSet<CheckingAccount> CheckingAccounts { get; set; }
+
+        public System.Data.Entity.DbSet<MVC_ATMDEM.Models.Transaction> Transactions { get; set; }
     }
 }
