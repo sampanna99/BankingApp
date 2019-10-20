@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MVC_ATMDEM.Models;
+using MVC_ATMDEM.Services;
 
 namespace MVC_ATMDEM.Controllers
 {
@@ -155,18 +156,22 @@ namespace MVC_ATMDEM.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var db = new ApplicationDbContext();
-                    var accountNUm = (123456 + db.CheckingAccounts.Count()).ToString().PadLeft(10, '0');
-                    var checkingAccount = new CheckingAccount
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        AccountNumber = accountNUm,
-                        Balance = 0,
-                        ApplicationUserId = user.Id
-                    };
-                    db.CheckingAccounts.Add(checkingAccount);
-                    db.SaveChanges();
+                    //var db = new ApplicationDbContext();
+                    //var accountNUm = (123456 + db.CheckingAccounts.Count()).ToString().PadLeft(10, '0');
+                    //var checkingAccount = new CheckingAccount
+                    //{
+                    //    FirstName = model.FirstName,
+                    //    LastName = model.LastName,
+                    //    AccountNumber = accountNUm,
+                    //    Balance = 0,
+                    //    ApplicationUserId = user.Id
+                    //};
+                    //db.CheckingAccounts.Add(checkingAccount);
+                    //db.SaveChanges();
+
+                    var service = new CheckingAccountService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+
+                    service.CreateCheckingAccount(model.FirstName, model.LastName, user.Id, 0);
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
@@ -385,8 +390,16 @@ namespace MVC_ATMDEM.Controllers
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
+
                     if (result.Succeeded)
                     {
+
+                        var service = new CheckingAccountService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+
+                        service.CreateCheckingAccount("Facebook", "User", user.Id, 500);
+
+
+
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }

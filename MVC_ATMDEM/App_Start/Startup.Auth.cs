@@ -55,8 +55,8 @@ namespace MVC_ATMDEM
             //   consumerSecret: "");
 
             app.UseFacebookAuthentication(
-               appId: "",
-               appSecret: "");
+               appId: "2447188025380517",
+               appSecret: "24090e2bf96f10f4f3c937aa979a59ca");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
