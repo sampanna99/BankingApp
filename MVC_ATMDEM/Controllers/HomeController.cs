@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using MVC_ATMDEM.Models;
 
 namespace MVC_ATMDEM.Controllers
@@ -18,6 +19,10 @@ namespace MVC_ATMDEM.Controllers
         {
 
             var userId = User.Identity.GetUserId();
+
+            var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = manager.FindById(userId);
+            ViewBag.Pin = user.Pin;
 
             var CheckingAccountId = db.CheckingAccounts.First(a => a.ApplicationUserId == userId).Id;
             ViewBag.CheckingAccountId = CheckingAccountId;

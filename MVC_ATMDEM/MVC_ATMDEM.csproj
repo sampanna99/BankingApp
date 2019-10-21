@@ -253,6 +253,7 @@
     <Content Include="Views\CHeckingAccount\Details.cshtml" />
     <Content Include="Views\CHeckingAccount\Create.cshtml" />
     <Content Include="Views\Transaction\Deposit.cshtml" />
+    <Content Include="Views\CHeckingAccount\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using MVC_ATMDEM.Models;
 
 namespace MVC_ATMDEM.Controllers
 {
     public class CHeckingAccountController : Controller
     {
+
+        private ApplicationDbContext db = new ApplicationDbContext();
         // GET: CHeckingAccount
         public ActionResult Index()
         {
@@ -18,16 +21,38 @@ namespace MVC_ATMDEM.Controllers
         // GET: CHeckingAccount/Details/5
         public ActionResult Details()
         {
+            var userId = User.Identity.GetUserId();
+            //var checkingAccount = new CheckingAccount
+            //{
+            //    AccountNumber = "0000123456",
+            //    FirstName = "Sam",
+            //    LastName = "pokhrel",
+            //    Balance = 500
+            //};
 
-            var checkingAccount = new CheckingAccount
-            {
-                AccountNumber = "0000123456",
-                FirstName = "Sam",
-                LastName = "pokhrel",
-                Balance = 500
-            };
+            var checkingAccount = db.CheckingAccounts.First(c => c.ApplicationUserId == userId);
+
+
 
             return View(checkingAccount);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult DetailsForAdmin(int id)
+        {
+            //var userId = User.Identity.GetUserId();
+            var checkingAccount = db.CheckingAccounts.Find(id);
+            return View("Details", checkingAccount);
+
+
+
+            return View(checkingAccount);
+
+        }
+
+        public ActionResult List()
+        {
+            return View(db.CheckingAccounts.ToList());
         }
 
         // GET: CHeckingAccount/Create
@@ -95,5 +120,6 @@ namespace MVC_ATMDEM.Controllers
                 return View();
             }
         }
+
     }
 }
