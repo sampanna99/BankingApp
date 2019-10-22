@@ -12,7 +12,18 @@ namespace MVC_ATMDEM.Controllers
     public class TransactionController : Controller
     {
 
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IApplicationDbContext db;
+
+        public TransactionController()
+        {
+            db = new ApplicationDbContext();
+        }
+
+        public TransactionController(IApplicationDbContext dbContext)
+        {
+
+            db = dbContext;
+        }
 
 
         // GET: Transaction
