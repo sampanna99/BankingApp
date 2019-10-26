@@ -48,7 +48,7 @@ namespace MVC_ATMDEM.Controllers
         public ActionResult Contact(string message)
         {
             ViewBag.Message = "Thanks got your message";
-            return View();
+            return PartialView("_ContactThanks");
         }
 
         public ActionResult Foo()
