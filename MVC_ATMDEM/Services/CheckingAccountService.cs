@@ -9,9 +9,9 @@ namespace MVC_ATMDEM.Services
     public class CheckingAccountService
     {
 
-        private ApplicationDbContext db;
+        private IApplicationDbContext db;
 
-        public CheckingAccountService(ApplicationDbContext dbContext)
+        public CheckingAccountService(IApplicationDbContext dbContext)
         {
             db = dbContext;
         }
@@ -28,6 +28,15 @@ namespace MVC_ATMDEM.Services
                 ApplicationUserId = UserId
             };
             db.CheckingAccounts.Add(checkingAccount);
+            db.SaveChanges();
+        }
+
+        public void UpdateBalance(int checkingAccountId)
+        {
+            var checkingAccount = db.CheckingAccounts.Where(c => c.Id == checkingAccountId).First();
+
+            checkingAccount.Balance = db.Transactions.Where(a => a.CheckingAccountId == checkingAccountId).Sum(c => c.Amount);
+
             db.SaveChanges();
         }
     }

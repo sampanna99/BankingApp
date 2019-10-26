@@ -35,10 +35,11 @@ namespace MVC_ATMDEM.Tests
             var checkingAccount = new CheckingAccount {Id = 1, AccountNumber = "000123TEST", Balance = 0};
             fakeDb.CheckingAccounts.Add(checkingAccount);
 
-
+            fakeDb.Transactions = new FakeDbSet<Transaction>();
             var transactionController = new TransactionController(fakeDb);
-            transactionController.Deposit(new Transaction {CheckingAccountId = 1, Amount = 25});
-
+            //transactionController.Deposit(1);
+            transactionController.Deposit(new Transaction { CheckingAccountId = 1, Amount = 25 });
+            //checkingAccount.Balance = 25;
             Assert.AreEqual(25, checkingAccount.Balance);
         }
 

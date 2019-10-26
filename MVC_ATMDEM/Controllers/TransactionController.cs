@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MVC_ATMDEM.Models;
+using MVC_ATMDEM.Services;
 
 namespace MVC_ATMDEM.Controllers
 {
@@ -39,6 +40,9 @@ namespace MVC_ATMDEM.Controllers
             {
                 db.Transactions.Add(transaction);
                 db.SaveChanges();
+
+                var service = new CheckingAccountService(db);
+                service.UpdateBalance(transaction.CheckingAccountId);
 
                 return RedirectToAction("Index", "Home");
             }
